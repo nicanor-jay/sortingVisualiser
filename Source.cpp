@@ -10,6 +10,26 @@ const int screenHeight = 400;
 const int numBars = 100;
 const int barWidth = screenWidth / numBars;
 
+void populateBarArray(int barArray[]) {
+    // Populate array list for bar heights
+    for (int i = 0; i < numBars; i++) {
+        barArray[i] = (rand() % screenHeight) + 1;
+        std::cout << barArray[i] << '\n';
+    }
+}
+
+void drawBarArray(sf::RenderWindow &window, int barArray[]) {
+    window.clear(sf::Color::Black);
+    for (int k = 0; k < numBars; k++)
+    {
+        sf::RectangleShape rect(sf::Vector2f(barWidth, barArray[k]));
+        rect.setFillColor(sf::Color::White);
+        rect.setPosition(k * barWidth, screenHeight - barArray[k]);
+        window.draw(rect);
+    }
+    window.display();
+}
+
 int main()
 {
     // create the window
@@ -17,13 +37,11 @@ int main()
 
     int temp;
     bool swap = false;
+    bool sorted = false;
 
-    // Populate array list for bar heights
     int barArray[numBars] = {};
-    for (int i = 0; i < numBars; i++) {
-        barArray[i] = (rand() % screenHeight) + 1;
-        std::cout << barArray[i] << '\n';
-    }
+
+    populateBarArray(barArray);
 
     // run the program as long as the window is open
     while (window.isOpen())
@@ -37,65 +55,42 @@ int main()
                 window.close();
         }
 
-        // Scrolls past
-        //temp = barArray[0];
-        //for (int i = 0; i < numBars-1; i++)
-        //{
-        //    barArray[i] = barArray[i + 1];
-        //}
-        //barArray[99] = temp;
-        //sf::sleep(sf::microseconds(5000));
-
         // clear the window with black color
         window.clear(sf::Color::Black);
 
-        // Draw bars
-        for (int i = 0; i < numBars; i++)
-        {
-            sf::RectangleShape rect(sf::Vector2f(barWidth, barArray[i]));
-            rect.setPosition(i * barWidth, screenHeight - barArray[i]);
-            window.draw(rect);
-        }
+        //drawBarArray(window, barArray);
 
         // Bubblesort Code
-        for (int i = 0; i < numBars; i++)
-        {
-            swap = false;
-
-            for (int j = 0; j < numBars - i - 1; j++)
+        while (sorted ==false) {
+            for (int i = 0; i < numBars-1; i++)
             {
-                if (barArray[j] > barArray[j + 1])
-                {
-                    //Swap
-                    temp = barArray[j];
-                    barArray[j] = barArray[j + 1];
-                    barArray[j + 1] = temp;
+                swap = false;
 
-                    swap = true;
-                    
-                    // Clear screen to update new bars
-                    window.clear(sf::Color::Black);
-                    // Draw bars
-                    for (int k = 0; k < numBars; k++)
+                for (int j = 0; j < numBars - i - 1; j++)
+                {
+                    if (barArray[j] >= barArray[j + 1])
                     {
-                        sf::RectangleShape rect(sf::Vector2f(barWidth, barArray[k]));
-                        rect.setPosition(k * barWidth, screenHeight - barArray[k]);
-                        window.draw(rect);
+                        //Swap
+                        temp = barArray[j];
+                        barArray[j] = barArray[j + 1];
+                        barArray[j + 1] = temp;
+
+                        swap = true;
+
+                        // Draw bars
+                        drawBarArray(window, barArray);
                     }
-                    sf::sleep(sf::milliseconds(1));
-                    window.display();
+                }
+
+                if (swap == false)
+                {
+                    sorted = true;
+                    
                 }
             }
-
-            if (swap == false)
-            {
-                break;
-            }
         }
-
-        // end the current frame
         
+        //window.display();
     }
-
     return 0;
 }
