@@ -17,14 +17,21 @@ int barArray[numBars] = {};
 
 void populateBarArray() {
     // Populate array list for bar heights
+    std::cout << "New bar array\n";
     for (int i = 0; i < numBars; i++) {
         barArray[i] = (rand() % barAreaHeight) + 1;
         std::cout << barArray[i] << '\n';
     }
 }
 
-void displayBarArray(sf::RenderWindow &window) {
-    window.clear(sf::Color::Black);
+void clearBarArea(sf::RenderWindow& window) {
+    rect.setFillColor(sf::Color::Black);
+    rect.setSize(sf::Vector2f(screenWidth, barAreaHeight));
+    rect.setPosition(0, 0);
+    window.draw(rect);
+}
+
+void drawBarArray(sf::RenderWindow &window) {
     for (int k = 0; k < numBars; k++)
     {
         rect.setSize(sf::Vector2f(barWidth, barArray[k]));
@@ -32,9 +39,9 @@ void displayBarArray(sf::RenderWindow &window) {
         rect.setPosition(k * barWidth, barAreaHeight - barArray[k]);
         window.draw(rect);
     }
-
-    window.display();
 }
+
+// BUBBLESORT
 
 void bubbleSort(sf::RenderWindow& window) {
     bool sorted = false;
@@ -57,7 +64,9 @@ void bubbleSort(sf::RenderWindow& window) {
                     barArray[j] = barArray[j + 1];
                     barArray[j + 1] = temp;
 
-                    displayBarArray(window);
+                    clearBarArea(window);
+                    drawBarArray(window);
+                    window.display();
 
                     swap = true;
                 }
@@ -65,14 +74,94 @@ void bubbleSort(sf::RenderWindow& window) {
 
             if (swap == false)
             {
-                sorted = truegit;
-                    
+                sorted = true;
             }
         }
     }
     else {
         std::cout << "Sorted\n";
     }
+}
+
+// QUICK SORT
+
+void swapIndexes(int index1, int index2) {
+    int temp;
+
+    std::cout << "Swapping indexes " << index1 << " & " << index2 << '\n';
+
+    temp = barArray[index1];
+    barArray[index1] = barArray[index2];
+    barArray[index2] = temp;
+}
+
+int partition( int start, int end)
+{
+    int pivot = barArray[start];
+
+    int count = 0;
+    for (int i = start + 1; i <= end; i++) {
+        if (barArray[i] <= pivot)
+            count++;
+    }
+
+    // Giving pivot element its correct position
+    int pivotIndex = start + count;
+    swapIndexes(pivotIndex, start);
+
+    // Sorting left and right parts of the pivot element
+    int i = start, j = end;
+
+    while (i < pivotIndex && j > pivotIndex) {
+
+        while (barArray[i] <= pivot) {
+            i++;
+        }
+
+        while (barArray[j] > pivot) {
+            j--;
+        }
+
+        if (i < pivotIndex && j > pivotIndex) {
+            swapIndexes(i++, j--);
+        }
+    }
+
+    return pivotIndex;
+}
+
+void quickSort(sf::RenderWindow& window, int start, int end)
+{
+
+    // base case
+    if (start >= end)
+        return;
+
+    // partitioning the array
+    int p = partition(start, end);
+
+    sf::RectangleShape rect(sf::Vector2f(barWidth, barArray[p]));
+    rect.setPosition(p * barWidth, barAreaHeight - barArray[p]);
+    rect.setFillColor(sf::Color::Blue);
+
+    drawBarArray(window);
+    window.draw(rect);
+    window.display();
+    sf::sleep(sf::milliseconds(200));
+    clearBarArea(window);
+
+    // Sorting the left part
+    quickSort(window, start, p - 1);
+
+    // Sorting the right part
+    quickSort(window, p + 1, end);
+    //drawBarArray(window);
+    //rect.setFillColor(sf::Color::Red);
+    //window.draw(rect);
+    //window.display();
+    //sf::sleep(sf::milliseconds(100));
+    //clearBarArea(window);
+
 }
 
 int main()
@@ -84,8 +173,9 @@ int main()
     bool swap = false;
     //bool sorted = false;
     sf::Vector2i mousePos;
-    sf::IntRect buttonBubbleSort(0, barAreaHeight, 100, 100);
-    sf::IntRect buttonRandomise(100, barAreaHeight, 100, 100);
+    sf::IntRect buttonRandomise(0, barAreaHeight, 100, 100);
+    sf::IntRect buttonBubbleSort(100, barAreaHeight, 100, 100);
+    sf::IntRect buttonQuickSort(200, barAreaHeight, 100, 100);
 
     sf::RectangleShape button(sf::Vector2f(100, 100));
 
@@ -105,7 +195,6 @@ int main()
                     window.close();
                 case sf::Event::MouseButtonPressed:
                     mousePos = sf::Mouse::getPosition(window);
-                    std::cout << mousePos.x << " " << mousePos.y << '\n';
                    
                     //Randomise bars
                     if (buttonRandomise.contains(mousePos)) 
@@ -116,20 +205,44 @@ int main()
                     //BubbleSort
                     if (buttonBubbleSort.contains(mousePos)) 
                     {
-                        std::cout << "BUTTON PRESSED!!!!!!!!\n";
                         bubbleSort(window);
+
                     }
+
+                    //QuickSort
+                    if (buttonQuickSort.contains(mousePos))
+                    {
+                        quickSort(window, 0, numBars - 1);
+
+                        for (int i = 0; i < numBars; i++) {
+                            std::cout << barArray[i] << '\n';
+                        }
+                    }
+
             }
         }
 
         // clear the window with black color
         window.clear(sf::Color::Black);
 
-        //button.setPosition(0, barAreaHeight);
-        //button.setFillColor(sf::Color::Green);
-        //window.draw(button);
+        //Display objects on screen
+        button.setPosition(0, barAreaHeight);
+        button.setFillColor(sf::Color::Magenta);
+        window.draw(button);
 
-        displayBarArray(window);
+        button.setPosition(100, barAreaHeight);
+        button.setFillColor(sf::Color::Green);
+        window.draw(button);
+
+
+        button.setPosition(200, barAreaHeight);
+        button.setFillColor(sf::Color::Blue);
+        window.draw(button);
+
+        drawBarArray(window);
+
+        // Display current frame
+        window.display();
     }
     return 0;
 }
