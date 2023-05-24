@@ -28,7 +28,6 @@ void barsDisplay::drawBarArray(sf::RenderWindow& window, sf::Color color) {
     for (int i = 0; i < NUM_BARS; i++) {
         drawBar(i, window, color);
     }
-    //window.display();
 }
 
 int barsDisplay::getValueAtIndex(int i) {
@@ -45,15 +44,13 @@ bool barsDisplay::checkIfSorted() {
             return false;
         }
     }
-    std::cout << "SORTED\n";
     return true;
 }
 
 void barsDisplay:: verifySorted(sf::RenderWindow& window) {
-    std::cout << "SORTED, MAKING GREEN\n";
-
     for (int i = 0; i < NUM_BARS - 1; i++) {
         drawBar(i, window, sf::Color::Green);
+        window.display();
         sf::sleep(sf::milliseconds(SLEEP_TIME));
     }
     drawBar(NUM_BARS - 1, window, sf::Color::Green);

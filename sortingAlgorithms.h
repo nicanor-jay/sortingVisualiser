@@ -12,3 +12,7 @@ void bubbleSort(sf::RenderWindow& window, barsDisplay& bars);
 
 int partition(int start, int end, barsDisplay& bars);
 void quickSort(sf::RenderWindow& window, int start, int end, barsDisplay& bars);
+
+void selectionSort(sf::RenderWindow& window, barsDisplay& bars);
+
+void insertionSort(sf::RenderWindow& window, barsDisplay& bars);

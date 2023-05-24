@@ -22,6 +22,8 @@ int main()
     sf::IntRect buttonRandomise(0, BAR_AREA_HEIGHT, 100, 100);
     sf::IntRect buttonBubbleSort(100, BAR_AREA_HEIGHT, 100, 100);
     sf::IntRect buttonQuickSort(200, BAR_AREA_HEIGHT, 100, 100);
+    sf::IntRect buttonSelectionSort(300, BAR_AREA_HEIGHT, 100, 100);
+    sf::IntRect buttonInsertionSort(400, BAR_AREA_HEIGHT, 100, 100);
 
     sf::RectangleShape button(sf::Vector2f(100, 100));
 
@@ -42,24 +44,36 @@ int main()
                 //Randomise bars
                 if (buttonRandomise.contains(mousePos))
                 {
+                    std::cout << "Randomizing" << std::endl;
                     myBarsDisplay.randomiseBars();
                     //myBarsDisplay.sortArray();
                 }
                 //BubbleSort
                 if (buttonBubbleSort.contains(mousePos))
                 {
+                    std::cout << "Bubble Sorting" << std::endl;
                     bubbleSort(window, myBarsDisplay);
-                    myBarsDisplay.clearBarArea(window);
-                    myBarsDisplay.drawBarArray(window);
-                    myBarsDisplay.verifySorted(window);
                 }
                 //QuickSort
                 if (buttonQuickSort.contains(mousePos))
                 {
+                    std::cout << "Quick Sorting" << std::endl;
                     quickSort(window, 0, NUM_BARS - 1, myBarsDisplay);
                     myBarsDisplay.clearBarArea(window);
-                    myBarsDisplay.drawBarArray(window);
-                    myBarsDisplay.verifySorted(window);
+                }
+                //SelectionSort
+                if (buttonSelectionSort.contains(mousePos))
+                {
+                    std::cout << "Selection Sorting" << std::endl;
+                    selectionSort(window, myBarsDisplay);
+                    myBarsDisplay.clearBarArea(window);
+                }
+                //InsertionSort
+                if (buttonInsertionSort.contains(mousePos))
+                {
+                    std::cout << "Selection Sorting" << std::endl;
+                    insertionSort(window, myBarsDisplay);
+                    myBarsDisplay.clearBarArea(window);
                 }
             }
         }
@@ -73,13 +87,22 @@ int main()
         window.draw(button);
 
         button.setPosition(100, BAR_AREA_HEIGHT);
-        button.setFillColor(sf::Color::Green);
+        button.setFillColor(sf::Color::Red);
         window.draw(button);
-
 
         button.setPosition(200, BAR_AREA_HEIGHT);
         button.setFillColor(sf::Color::Blue);
         window.draw(button);
+
+        button.setPosition(300, BAR_AREA_HEIGHT);
+        button.setFillColor(sf::Color::Yellow);
+        window.draw(button);
+
+        button.setPosition(400, BAR_AREA_HEIGHT);
+        button.setFillColor(sf::Color::Cyan);
+        window.draw(button);
+
+
         if (!myBarsDisplay.checkIfSorted()) {
             myBarsDisplay.clearBarArea(window);
             myBarsDisplay.drawBarArray(window);

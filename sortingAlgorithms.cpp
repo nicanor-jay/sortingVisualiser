@@ -96,3 +96,42 @@ void quickSort(sf::RenderWindow& window, int start, int end, barsDisplay& bars)
     // Sorting the right part
     quickSort(window, p + 1, end, bars);
 }
+
+// Selection Sort
+void selectionSort(sf::RenderWindow& window, barsDisplay& bars) {
+    int minIndex;
+    for (int i = 0; i < NUM_BARS - 1; i++) {
+        minIndex = i;
+        for (int j = i + 1; j < NUM_BARS; j++) {
+            if (bars.getValueAtIndex(j) < bars.getValueAtIndex(minIndex)) {
+                minIndex = j;
+            }
+        }
+        bars.swapBars(i, minIndex);
+        bars.clearBarArea(window);
+        bars.drawBarArray(window);
+        window.display();
+
+        sf::sleep(sf::milliseconds(SLEEP_TIME));
+    }
+}
+
+//Insertion Sort
+void insertionSort(sf::RenderWindow& window, barsDisplay& bars) {
+    for (int i = 1; i < NUM_BARS; i++) {
+        int current = bars.getValueAtIndex(i);
+        int j = i - 1;
+        while (j >= 0 && bars.getValueAtIndex(j) > current) {
+            bars.swapBars(j + 1, j);
+
+            bars.clearBarArea(window);
+            bars.drawBarArray(window);
+            bars.drawBar(j,window, sf::Color::Blue);
+            window.display();
+            sf::sleep(sf::milliseconds(SLEEP_TIME));
+
+            j--;
+        }
+        bars.setValueAtIndex(j + 1, current);
+    }
+}
