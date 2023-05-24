@@ -18,6 +18,9 @@ int main()
 
     sf::Vector2i mousePos;
 
+    sf::Text text;
+    sf::Font font;
+
     //Determine Button sizes
     sf::IntRect buttonRandomise(0, BAR_AREA_HEIGHT, 100, 100);
     sf::IntRect buttonBubbleSort(100, BAR_AREA_HEIGHT, 100, 100);
@@ -26,6 +29,18 @@ int main()
     sf::IntRect buttonInsertionSort(400, BAR_AREA_HEIGHT, 100, 100);
 
     sf::RectangleShape button(sf::Vector2f(100, 100));
+
+    //Getting font
+    if (!font.loadFromFile("./Montserrat.ttf"))
+    {
+        return 0;
+    }
+
+    text.setFont(font);
+    text.setCharacterSize(16);
+    text.setFillColor(sf::Color::Black);
+    text.setStyle(sf::Text::Bold);
+    text.setRotation(-45);
 
     window.clear(sf::Color::Black);
     while (window.isOpen()) {
@@ -84,23 +99,44 @@ int main()
 
         button.setPosition(0, BAR_AREA_HEIGHT);
         button.setFillColor(sf::Color::Magenta);
+        text.setString("Randomise");
+        text.setPosition(0, BAR_AREA_HEIGHT + 75);
         window.draw(button);
+        window.draw(text);
 
         button.setPosition(100, BAR_AREA_HEIGHT);
         button.setFillColor(sf::Color::Red);
+        text.setString("Bubble Sort");
+        text.setPosition(100, BAR_AREA_HEIGHT + 75);
         window.draw(button);
+        window.draw(text);
 
         button.setPosition(200, BAR_AREA_HEIGHT);
         button.setFillColor(sf::Color::Blue);
+        text.setString("Quick Sort");
+        text.setPosition(200, BAR_AREA_HEIGHT + 75);
         window.draw(button);
+        window.draw(text);
 
         button.setPosition(300, BAR_AREA_HEIGHT);
         button.setFillColor(sf::Color::Yellow);
+        text.setString("Selection");
+        text.setPosition(310, BAR_AREA_HEIGHT + 65);
         window.draw(button);
+        window.draw(text);
+        text.setString("Sort");
+        text.setPosition(340, BAR_AREA_HEIGHT + 65);
+        window.draw(text);
 
         button.setPosition(400, BAR_AREA_HEIGHT);
         button.setFillColor(sf::Color::Cyan);
+        text.setString("Insertion");
+        text.setPosition(410, BAR_AREA_HEIGHT + 65);
         window.draw(button);
+        window.draw(text);
+        text.setString("Sort");
+        text.setPosition(440, BAR_AREA_HEIGHT + 65);
+        window.draw(text);
 
 
         if (!myBarsDisplay.checkIfSorted()) {
