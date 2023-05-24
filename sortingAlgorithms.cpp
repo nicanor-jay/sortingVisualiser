@@ -19,11 +19,12 @@ void bubbleSort(sf::RenderWindow& window, barsDisplay& bars) {
                     //Swap
                     bars.swapBars(j, j + 1);
 
+                    bars.clearBarArea(window);
                     bars.drawBarArray(window);
                     window.display();
-                    //sf::sleep(sf::milliseconds(1));
 
                     swap = true;
+                    sf::sleep(sf::milliseconds(SLEEP_TIME));
                 }
             }
             if (swap == false)
@@ -35,5 +36,63 @@ void bubbleSort(sf::RenderWindow& window, barsDisplay& bars) {
     else {
         std::cout << "Sorted\n";
     }
-    bars.verifySorted(window);
+}
+
+//Quick Sort
+int partition( int start, int end, barsDisplay& bars)
+{
+    int pivot = bars.getValueAtIndex(start);
+
+    int count = 0;
+    for (int i = start + 1; i <= end; i++) {
+        if (bars.getValueAtIndex(i) <= pivot)
+            count++;
+    }
+
+    // Giving pivot element its correct position
+    int pivotIndex = start + count;
+    bars.swapBars(pivotIndex, start);
+
+    // Sorting left and right parts of the pivot element
+    int i = start, j = end;
+
+    while (i < pivotIndex && j > pivotIndex) {
+
+        while (bars.getValueAtIndex(i) <= pivot) {
+            i++;
+        }
+
+        while (bars.getValueAtIndex(j) > pivot) {
+            j--;
+        }
+
+        if (i < pivotIndex && j > pivotIndex) {
+            bars.swapBars(i++, j--);
+        }
+    }
+
+    return pivotIndex;
+}
+
+void quickSort(sf::RenderWindow& window, int start, int end, barsDisplay& bars)
+{
+
+    // base case
+    if (start >= end)
+        return;
+
+    // partitioning the array
+    int p = partition(start, end, bars);
+
+    bars.clearBarArea(window);
+    bars.drawBarArray(window);
+    bars.drawBar(p, window, sf::Color::Blue);
+    window.display();
+    sf::sleep(sf::milliseconds(SLEEP_TIME));
+
+    // Sorting the left part
+    quickSort(window, start, p - 1, bars);
+
+    // Sorting the right part
+    quickSort(window, p + 1, end, bars);
 }

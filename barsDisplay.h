@@ -13,9 +13,9 @@ public:
 	//
 	void randomiseBars();
 
-	void drawBar(int index, sf::Color color = sf::Color::White);
+	void drawBar(int index, sf::RenderWindow& window, sf::Color color = sf::Color::White);
 
-	void drawBarArray(sf::RenderWindow& window);
+	void drawBarArray(sf::RenderWindow& window, sf::Color color = sf::Color::White);
 
 	int getValueAtIndex(int i);
 
@@ -28,4 +28,6 @@ public:
 	void swapBars(int index1, int index2);
 
 	void sortArray();
+
+	void clearBarArea(sf::RenderWindow& window);
 };

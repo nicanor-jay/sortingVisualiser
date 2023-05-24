@@ -4,3 +4,4 @@ extern const int SCREEN_HEIGHT;
 extern const int BAR_AREA_HEIGHT;
 extern const int NUM_BARS;
 extern const int BAR_WIDTH;
+extern const int SLEEP_TIME;
